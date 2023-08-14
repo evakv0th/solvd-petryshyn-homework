@@ -46,9 +46,13 @@ function add(...args) {
 
 const curriedSum = curry(add, 5);
 
-const sumRes = curriedSum(5,'_','_')('_')('_');
-console.log("pending curried func waiting for arguments:", sumRes);
+const s1 = curriedSum(1); 
+const s2 = s1('_'); 
+const s3 = s2(2); 
+const s4 = s3(3); 
+const s5 = s4('_'); 
+const s6 = s5(4); 
+const sumResult = s6(5); 
 
+console.log('partialCurryResult:', sumResult)
 
-const sumRes2 = sumRes(999)(66)(20)(110);
-console.log("Result", sumRes2);
