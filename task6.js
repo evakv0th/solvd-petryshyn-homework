@@ -16,20 +16,27 @@ function curry(func, arity) {
   };
 }
 
-function multiply(a, b, c, d) {
-  return a * b * c* d;
+function multiply(a, b, c) {
+  return a * b * c;
 }
 
-const curriedMultiply = curry(multiply, 4);
+ 
 
-const result = curriedMultiply(2,"_")(3,'_');
 
-console.log("pending curried func waiting for arguments:", result);
+const curriedMultiply = curry(multiply, 3);
 
-const resultN = result('_')(5);
-console.log("pending curried func waiting for arguments:", resultN);
-const resultN1 = resultN(4)
-console.log("Result:", resultN1);
+const step1 = curriedMultiply(2); // Returns a curried function  
+const step2 = step1(3); // Returns a curried function  
+const result = step2(4); // Returns the final result: 2 * 3 * 4 = 24  
+  
+console.log("Result:", result); // Expected: 24
+
+// console.log("pending curried func waiting for arguments:", result);
+
+// const resultN = result('_')(5);
+// console.log("pending curried func waiting for arguments:", resultN);
+// const resultN1 = resultN(4)
+// console.log("Result:", resultN1);
 
 function add(...args) {
   let sum = 0;

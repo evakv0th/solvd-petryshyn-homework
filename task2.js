@@ -8,7 +8,7 @@ function highlightKeywords(string, keywords) {
       return word;
     }
   }).join(' ');
-}s
+}
 
 const keywords = ["JavaScript", "template", "tagged"];
 const template =
