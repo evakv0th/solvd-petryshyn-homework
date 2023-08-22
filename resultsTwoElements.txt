@@ -1,0 +1,32 @@
+1.
+quickSort of 2 elements 0.0718 - RANDOM
+quickSort of 2 elements 0.0038 - SORTED
+quickSort of 2 elements 0.0025 - SORTED-BACKWARDS
+mergeSort of 2 elements 0.0746 - RANDOM
+mergeSort of 2 elements 0.0114 - SORTED
+mergeSort of 2 elements 0.0043 - SORTED-BACKWARDS
+bubbleSort of 2 elements 0.0508 - RANDOM
+bubbleSort of 2 elements 0.0015 - SORTED
+bubbleSort of 2 elements 0.0015 - SORTED-BACKWARDS
+
+2.
+quickSort of 2 elements 0.0603 - RANDOM
+quickSort of 2 elements 0.0035 - SORTED
+quickSort of 2 elements 0.0023 - SORTED-BACKWARDS
+mergeSort of 2 elements 0.0602 - RANDOM
+mergeSort of 2 elements 0.0073 - SORTED
+mergeSort of 2 elements 0.0026 - SORTED-BACKWARDS
+bubbleSort of 2 elements 0.0317 - RANDOM
+bubbleSort of 2 elements 0.0011 - SORTED
+bubbleSort of 2 elements 0.0009 - SORTED-BACKWARDS
+
+3.
+quickSort of 2 elements 0.064 - RANDOM
+quickSort of 2 elements 0.0039 - SORTED
+quickSort of 2 elements 0.0024 - SORTED-BACKWARDS
+mergeSort of 2 elements 0.0612 - RANDOM
+mergeSort of 2 elements 0.0072 - SORTED
+mergeSort of 2 elements 0.0027 - SORTED-BACKWARDS
+bubbleSort of 2 elements 0.0324 - RANDOM
+bubbleSort of 2 elements 0.001 - SORTED
+bubbleSort of 2 elements 0.002 - SORTED-BACKWARDS
