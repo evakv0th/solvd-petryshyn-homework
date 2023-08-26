@@ -11,78 +11,70 @@ function shuffleArray(array) {
   return newArr;
 }
 
-let lengthOfArray = 75;
-let arrSorted = [];
-for (let i = 1; i <= lengthOfArray; i++) {
-  arrSorted.push(i);
+function measureSortTime(sortFunction, array) {
+  let t0 = performance.now();
+  sortFunction(array);
+  let t1 = performance.now();
+  return Math.round((t1 - t0) * 10000) / 10000;
 }
-let arrSortedBackwards = [...arrSorted].reverse();
-let arrRandom = shuffleArray(arrSorted);
 
-let results = "";
+function runSortingTests(array, arrayType) {
+  const result = {
+    "Array Length": array.length,
+    "Array Type": arrayType,
+  };
 
-let t0 = performance.now();
-quickSort(arrRandom);
-let t1 = performance.now();
-results += `quickSort of ${lengthOfArray} elements ${
-  Math.round((t1 - t0) * 10000) / 10000
-} - RANDOM\n`;
+  const sortingAlgorithms = [
+    { name: "QuickSort", func: quickSort },
+    { name: "MergeSort", func: mergeSort },
+    { name: "BubbleSort", func: bubbleSort },
+  ];
 
-t0 = performance.now();
-quickSort(arrSorted);
-t1 = performance.now();
-results += `quickSort of ${lengthOfArray} elements ${
-  Math.round((t1 - t0) * 10000) / 10000
-} - SORTED\n`;
+  for (const algorithm of sortingAlgorithms) {
+    const time = measureSortTime(algorithm.func, [...array]);
+    result[algorithm.name] = `${time} ms`;
+  }
 
-t0 = performance.now();
-quickSort(arrSortedBackwards);
-t1 = performance.now();
-results += `quickSort of ${lengthOfArray} elements ${
-  Math.round((t1 - t0) * 10000) / 10000
-} - SORTED-BACKWARDS\n`;
+  return result;
+}
 
-t0 = performance.now();
-mergeSort(arrRandom);
-t1 = performance.now();
-results += `mergeSort of ${lengthOfArray} elements ${
-  Math.round((t1 - t0) * 10000) / 10000
-} - RANDOM\n`;
+const arrayLengths = [2, 10, 50, 100, 500, 1000, 5000, 10000];
+const arrayTypes = ["RANDOM", "SORTED", "SORTED-BACKWARDS"];
 
-t0 = performance.now();
-mergeSort(arrSorted);
-t1 = performance.now();
-results += `mergeSort of ${lengthOfArray} elements ${
-  Math.round((t1 - t0) * 10000) / 10000
-} - SORTED\n`;
+const allResultsRandom = [];
+const allResultsSorted = [];
+const allResultsSortedBack = [];
 
-t0 = performance.now();
-mergeSort(arrSortedBackwards);
-t1 = performance.now();
-results += `mergeSort of ${lengthOfArray} elements ${
-  Math.round((t1 - t0) * 10000) / 10000
-} - SORTED-BACKWARDS\n`;
+for (const length of arrayLengths) {
+  let array;
 
+  array = shuffleArray(Array.from({ length }, (_, index) => index + 1));
+  allResultsRandom.push(runSortingTests(array, arrayTypes[0]));
+}
 
-t0 = performance.now();
-bubbleSort(arrRandom);
-t1 = performance.now();
-results += `bubbleSort of ${lengthOfArray} elements ${
-  Math.round((t1 - t0) * 10000) / 10000
-} - RANDOM\n`;
+for (const length of arrayLengths) {
+  let array;
 
-t0 = performance.now();
-bubbleSort(arrSorted);
-t1 = performance.now();
-results += `bubbleSort of ${lengthOfArray} elements ${
-  Math.round((t1 - t0) * 10000) / 10000
-} - SORTED\n`;
+  array = Array.from({ length }, (_, index) => index + 1);
+  allResultsSorted.push(runSortingTests(array, arrayTypes[1]));
+}
 
-t0 = performance.now();
-bubbleSort(arrSortedBackwards);
-t1 = performance.now();
-results += `bubbleSort of ${lengthOfArray} elements ${
-  Math.round((t1 - t0) * 10000) / 10000
-} - SORTED-BACKWARDS\n`;
+for (const length of arrayLengths) {
+  let array;
 
-console.log(results);
+  array = Array.from({ length }, (_, index) => length - index);
+  allResultsSortedBack.push(runSortingTests(array, arrayTypes[2]));
+}
+
+console.table(allResultsRandom);
+console.table(allResultsSorted);
+console.table(allResultsSortedBack);
+
+`Conclusion: In my usage of sorting bubble sort was the worst from 100 elements, 
+also my mergeSort implementation started to get really clunky at 100000 elements and couldn't even compile at 1000000 elements. 
+I've found some optimization in the internet, but i thought its better to stay it like that to show the difference, 
+because from what i've seen it's classic way to write mergeSort
+
+Why mergeS and quickS are better in bigger datasets: 
+1) They both have O(nlogn) while bubbleS has O(n^2)
+2) bubbleS doesnt benefit from partially sort list, while quick and merge both have this "adaptivity".`;

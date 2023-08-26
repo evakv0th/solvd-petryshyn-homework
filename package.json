@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/evakv0th/solvd-petryshyn-homework/issues"
   },
-  "homepage": "https://github.com/evakv0th/solvd-petryshyn-homework#readme"
+  "homepage": "https://github.com/evakv0th/solvd-petryshyn-homework#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "nodeplotlib": "^1.1.2"
+  }
 }
