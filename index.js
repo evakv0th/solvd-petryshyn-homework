@@ -70,11 +70,10 @@ console.table(allResultsRandom);
 console.table(allResultsSorted);
 console.table(allResultsSortedBack);
 
-`Conclusion: In my usage of sorting bubble sort was the worst from 100 elements, 
-also my mergeSort implementation started to get really clunky at 100000 elements and couldn't even compile at 1000000 elements. 
-I've found some optimization in the internet, but i thought its better to stay it like that to show the difference, 
-because from what i've seen it's classic way to write mergeSort
+const conclusion = `Conclusion: In my usage of sorting bubble sort was the worst starting from range 100-500 elements.
 
 Why mergeS and quickS are better in bigger datasets: 
 1) They both have O(nlogn) while bubbleS has O(n^2)
 2) bubbleS doesnt benefit from partially sort list, while quick and merge both have this "adaptivity".`;
+
+console.log(conclusion);
