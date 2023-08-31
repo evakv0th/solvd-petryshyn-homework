@@ -3,7 +3,10 @@ const fs = require("fs");
 class AsyncOperationManager {
   simulateAsyncOperation(delay) {
     setTimeout(() => {
-      console.log(`Async operation completed after ${delay} ms`);
+      console.log(`Async operation completed after ${delay} ms`)
+      process.nextTick(() => {
+        console.log('this message shows after the setTimeout')
+      });
     }, delay);
   }
 
@@ -23,10 +26,12 @@ class AsyncOperationManager {
   scheduleImmediate() {
     setImmediate(() => {
       console.log("Immediate task executed");
+      process.nextTick(() => {
+        console.log('this message shows after the setImmediate')
+      });
     });
   }
 
-  
   bonusScenario() {
     console.log("Bonus: starts sync");
 
@@ -49,14 +54,11 @@ class AsyncOperationManager {
       console.log(`Bonus: Timer cb3`);
     }, 0);
 
-
     setTimeout(() => {
       console.log("Bonus: Simulating I/O operation");
 
       let start = Date.now();
-      while (Date.now() - start < 1000) {
-
-      }
+      while (Date.now() - start < 1000) {}
       console.log("Bonus: I/O operation complete");
     }, 0);
 
@@ -69,6 +71,12 @@ class AsyncOperationManager {
 }
 
 const manager = new AsyncOperationManager();
+
+manager.simulateAsyncOperation(200);
+process.nextTick(() => {
+  console.log("Microtask executed immediately");
+});
+manager.scheduleImmediate();
 
 // event loop helps with async programming and is the reason why single threaded javascript is not "blocking" when making long requests etc..
 manager.simulateAsyncOperation(2000);
