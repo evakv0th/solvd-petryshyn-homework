@@ -1,32 +1,24 @@
 function promiseAllSettled(arr) {
-  let results = [];
-  let promiseNums = [];
-
   return new Promise((resolve, reject) => {
+    const results = [];
     for (let i = 0; i < arr.length; i++) {
       if (arr[i] instanceof Promise) {
-        promiseNums++;
         arr[i]
           .then((values) => {
             results[i] = { status: "fulfilled", value: values };
-            promiseNums--;
-            if (promiseNums === 0) {
+            if (arr.length === results.length) {
               resolve(results);
             }
           })
           .catch((reason) => {
-            promiseNums--;
             results[i] = { status: "rejected", reason: reason };
-            if (promiseNums === 0) {
+            if (arr.length === results.length) {
               resolve(results);
             }
           });
       } else {
         results[i] = { status: "fulfilled", value: arr[i] };
       }
-    }
-    if (promiseNums === 0) {
-      resolve(results);
     }
   });
 }
@@ -44,7 +36,9 @@ promiseAllSettled(promises).then((results) => {
   for (let result of results) {
     console.log("All promises settled:", result);
   }
-  // Expected: [{ status: 'fulfilled', value: 1 },
-  //            { status: 'rejected', reason: 'Error occurred' },
-  //            { status: 'fulfilled', value: 3 }]
+  // All promises settled: (4) [{…}, {…}, {…}, {…}]
+  // All promises settled: {status: 'fulfilled', value: 1}
+  // All promises settled: {status: 'rejected', reason: 3}
+  // All promises settled: {status: 'fulfilled', value: 42}
+  // All promises settled: {status: 'fulfilled', value: 3}
 });
