@@ -1,13 +1,12 @@
 // creating class Book
 // only interesting moment is method checkYourLuck - user can check their luck and search for the money in a book, if they fail - book is automatically placed on their cart
 class Book {
-  constructor(title, author, ISBN, price, availability, genre) {
+  constructor(title, author, ISBN, price, availability) {
     this.title = title;
     this.author = author;
     this.ISBN = ISBN;
     this.price = price;
     this.availability = availability;
-    this.genre = genre;
   }
   checkYourLuck(user) {
     if (!(user instanceof User)) {
@@ -30,16 +29,37 @@ class Book {
   }
 }
 
+class PhantasyBook extends Book {
+  constructor(title, author, ISBN, price, availability) {
+    super(title, author, ISBN, price, availability);
+  }
+}
+class RomanticBook extends Book {
+  constructor(title, author, ISBN, price, availability) {
+    super(title, author, ISBN, price, availability);
+  }
+}
+class ScienceBook extends Book {
+  constructor(title, author, ISBN, price, availability) {
+    super(title, author, ISBN, price, availability);
+  }
+}
+class HorrorBook extends Book {
+  constructor(title, author, ISBN, price, availability) {
+    super(title, author, ISBN, price, availability);
+  }
+}
 // class User with name, email and id
 // also this class starts with it's own cart
 // placeOrder method is checking if the cart is empty and if its not - order is being created
 // also it checks users finances
 // after creation it goes through the cart and returns an order (also removing books from the cart)
 class User {
-  constructor(name, email, id, money) {
+  static idCount = 0;
+  constructor(name, email, money) {
     this.name = name;
     this.email = email;
-    this.id = id;
+    this.id = ++User.idCount;
     this.money = money;
     this.cart = new Cart();
   }
@@ -96,21 +116,16 @@ class Cart {
       const index = this.books.indexOf(book);
       this.books.splice(index, 1);
       let endingMsg = "";
-      switch (book.genre) {
-        case "phantasy":
-          endingMsg = `Our user wants some real life story and ${book.title} is not about that!`;
-          break;
-        case "romantic":
-          endingMsg = `Our user is not that romantic`;
-          break;
-        case "science":
-          endingMsg = `Our user has a headache, ${book.title} book is not for them`;
-          break;
-        case "horror":
-          endingMsg = `Our user is terrified by ${book.title}`;
-          break;
-        default:
-          endingMsg = `Our user took ${book.title} by mistake`;
+      if (book instanceof PhantasyBook) {
+        endingMsg = `Our user wants some real life story and ${book.title} is not about that!`;
+      } else if (book instanceof RomanticBook) {
+        endingMsg = `Our user is not that romantic`;
+      } else if (book instanceof ScienceBook) {
+        endingMsg = `Our user has a headache, ${book.title} book is not for them`;
+      } else if (book instanceof HorrorBook) {
+        endingMsg = `Our user is terrified by ${book.title}`;
+      } else {
+        endingMsg = `Our user took ${book.title} by mistake`;
       }
       console.log(`${book.title} is removed from the cart. ${endingMsg}`);
     }
@@ -144,13 +159,13 @@ class Order {
   }
 }
 
-const book1 = new Book("witcher", "sapkovsky", 1, 100, "available", "phantasy");
-const book2 = new Book("titanic", "test", 2, 30, "out of stock", "romantic");
-const book3 = new Book("algorithms", "joe", 3, 10, "available", "science");
-const book4 = new Book("dagon", "lovecraft", 4, 40, "available", "horror");
+const book1 = new PhantasyBook("witcher", "sapkovsky", 1, 100, "available");
+const book2 = new RomanticBook("titanic", "test", 2, 30, "out of stock");
+const book3 = new ScienceBook("algorithms", "joe", 3, 10, "available");
+const book4 = new HorrorBook("dagon", "lovecraft", 4, 40, "available");
 
-const user1 = new User("joe", "er@gm.com", 1, 200);
-const user2 = new User("test", "er@gm.com", 2, 200);
+const user1 = new User("joe", "er@gm.com", 200);
+const user2 = new User("test", "er@gm.com", 200);
 
 book3.checkYourLuck(user1);
 
