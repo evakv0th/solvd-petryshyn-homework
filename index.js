@@ -27,26 +27,43 @@ class Book {
       user.cart.addBooks(this);
     }
   }
+  getEndingMsg() {
+    return `Our user took ${this.title} by mistake`;
+  }
 }
 
+// book sub classes with different genre
 class PhantasyBook extends Book {
   constructor(title, author, ISBN, price, availability) {
     super(title, author, ISBN, price, availability);
+  }
+
+  getEndingMsg() {
+    return `Our user wants some real life story and ${this.title} is not about that!`;
   }
 }
 class RomanticBook extends Book {
   constructor(title, author, ISBN, price, availability) {
     super(title, author, ISBN, price, availability);
   }
+  getEndingMsg() {
+    return `Our user is not that romantic`;
+  }
 }
 class ScienceBook extends Book {
   constructor(title, author, ISBN, price, availability) {
     super(title, author, ISBN, price, availability);
   }
+  getEndingMsg() {
+    return `Our user has a headache, ${this.title} book is not for them`;
+  }
 }
 class HorrorBook extends Book {
   constructor(title, author, ISBN, price, availability) {
     super(title, author, ISBN, price, availability);
+  }
+  getEndingMsg() {
+    return `Our user is terrified by ${this.title}`;
   }
 }
 // class User with name, email and id
@@ -115,18 +132,8 @@ class Cart {
     if (this.books.includes(book)) {
       const index = this.books.indexOf(book);
       this.books.splice(index, 1);
-      let endingMsg = "";
-      if (book instanceof PhantasyBook) {
-        endingMsg = `Our user wants some real life story and ${book.title} is not about that!`;
-      } else if (book instanceof RomanticBook) {
-        endingMsg = `Our user is not that romantic`;
-      } else if (book instanceof ScienceBook) {
-        endingMsg = `Our user has a headache, ${book.title} book is not for them`;
-      } else if (book instanceof HorrorBook) {
-        endingMsg = `Our user is terrified by ${book.title}`;
-      } else {
-        endingMsg = `Our user took ${book.title} by mistake`;
-      }
+      let endingMsg = book.getEndingMsg();
+
       console.log(`${book.title} is removed from the cart. ${endingMsg}`);
     }
   }
