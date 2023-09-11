@@ -83,7 +83,7 @@ tree.insert(18);
 
 console.log(tree);
 
-console.log(tree.search(7))
+console.log(tree.search(7));
 let root = tree.getRootNode();
 
 tree.inorder(root);
@@ -91,3 +91,29 @@ console.log("postorder traversal");
 tree.postorder(root);
 console.log("preorder traversal");
 tree.preorder(root);
+
+function isBinarySearchTree(node, min = null, max = null) {
+  if (node === null) {
+    return true;
+  }
+
+  if (
+    (min !== null && node.data <= min) ||
+    (max !== null && node.data >= max)
+  ) {
+    return false;
+  }
+
+  return (
+    isBinarySearchTree(node.left, min, node.data) &&
+    isBinarySearchTree(node.right, node.data, max)
+  );
+}
+
+const isBST = isBinarySearchTree(root);
+
+if (isBST) {
+  console.log("The tree is a binary search tree.");
+} else {
+  console.log("The tree is not a binary search tree.");
+}

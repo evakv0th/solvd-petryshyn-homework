@@ -1,60 +1,89 @@
+class ListNode {
+  constructor(data) {
+    this.data = data;
+    this.next = null;
+  }
+}
+
 class LinkedList {
   constructor() {
     this.head = null;
-    this.size = 0;
+    this.length = 0;
   }
-  insert(data, index) {
-    if (index < 0 || index > this.size)
-      return console.log("Please enter a valid index.");
-    else {
-      const node = new ListNode(data);
-      let curr;
-      let prev;
 
-      curr = this.head;
+  append(value) {
+    const newNode = new ListNode(value);
 
-      if (index == 0) {
-        node.next = this.head;
-        this.head = node;
-      } else {
-        curr = this.head;
-        let it = 0;
-
-        while (it < index) {
-          it++;
-          prev = curr;
-          curr = curr.next;
-        }
-
-        node.next = curr;
-        prev.next = node;
+    if (!this.head) {
+      this.head = newNode;
+    } else {
+      let current = this.head;
+      while (current.next) {
+        current = current.next;
       }
-      this.size++;
+      current.next = newNode;
     }
+
+    this.length++;
   }
+
+  insert(value, position) {
+    if (position < 0 || position > this.length) {
+      throw new Error("Invalid position");
+    }
+
+    const newNode = new ListNode(value);
+
+    if (position === 0) {
+      newNode.next = this.head;
+      this.head = newNode;
+    } else {
+      let current = this.head;
+      let prev = null;
+      let index = 0;
+
+      while (index < position) {
+        prev = current;
+        current = current.next;
+        index++;
+      }
+
+      newNode.next = current;
+      prev.next = newNode;
+    }
+
+    this.length++;
+  }
+
   remove(data) {
+    if (!this.head) {
+      return;
+    }
+
+    if (this.head.data === data) {
+      this.head = this.head.next;
+      this.length--;
+      return;
+    }
+
     let current = this.head;
     let prev = null;
 
-    while (current != null) {
-      if (current.data === data) {
-        if (prev == null) {
-          this.head = current.next;
-        } else {
-          prev.next = current.next;
-        }
-        this.size--;
-        return current.data;
-      }
+    while (current && current.data !== data) {
       prev = current;
       current = current.next;
     }
-    return -1;
+
+    if (current) {
+      prev.next = current.next;
+      this.length--;
+    }
   }
+
   search(data) {
     let current = this.head;
 
-    while (current !== null) {
+    while (current) {
       if (current.data === data) {
         return current;
       }
@@ -63,24 +92,32 @@ class LinkedList {
 
     return null;
   }
-}
 
-class ListNode {
-  constructor(data) {
-    this.data = data;
-    this.next = null;
+  hasCycle() {
+    let slow = this.head;
+    let fast = this.head;
+
+    while (fast && fast.next) {
+      fast = fast.next.next;
+      slow = slow.next;
+      if (fast === slow) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
 
 const linkedList = new LinkedList();
-linkedList.insert(10, 0);
-linkedList.insert(20, 1);
-linkedList.insert(30, 2);
+linkedList.append(10);
+linkedList.append(20);
+linkedList.append(30);
+linkedList.insert(15, 1);
 
-const foundNode = linkedList.search(20);
+linkedList.search(30).next = linkedList.search(15);
 
-if (foundNode) {
-  console.log("Node found with data:", foundNode);
-} else {
-  console.log("Node not found.");
-}
+const found = linkedList.search(15);
+console.log(found);
+
+console.log("Linked List has cycle:", linkedList.hasCycle());

@@ -1,5 +1,4 @@
 import { Queue } from "./queue.js";
-
 class Graph {
   constructor(noOfVertices) {
     this.noOfVertices = noOfVertices;
@@ -69,28 +68,161 @@ class Graph {
       if (!visited[get_elem]) this.DFSUtil(get_elem, visited);
     }
   }
+  dijkstra(src, dest) {
+    let dist = new Array(this.noOfVertices);
+    let sptSet = new Array(this.noOfVertices);
+    let prev = new Array(this.noOfVertices);
+
+    for (let i = 0; i < this.noOfVertices; i++) {
+      dist[i] = Number.MAX_VALUE;
+      sptSet[i] = false;
+      prev[i] = -1;
+    }
+
+    dist[src] = 0;
+
+    for (let count = 0; count < this.noOfVertices - 1; count++) {
+      const u = this.minDistance(dist, sptSet);
+
+      sptSet[u] = true;
+
+      const neighbors = this.AdjList.get(u);
+      if (neighbors) {
+        for (let i = 0; i < neighbors.length; i++) {
+          const v = neighbors[i];
+          const weight = 1;
+          if (
+            !sptSet[v] &&
+            dist[u] !== Number.MAX_VALUE &&
+            dist[u] + weight < dist[v]
+          ) {
+            dist[v] = dist[u] + weight;
+            prev[v] = u;
+          }
+        }
+      }
+    }
+
+    const shortestPath = this.reconstructPath(prev, src, dest);
+    return shortestPath;
+  }
+
+  reconstructPath(prev, src, dest) {
+    const path = [];
+    let current = dest;
+
+    while (current !== -1) {
+      path.unshift(current);
+      current = prev[current];
+    }
+
+    if (path[0] === src) {
+      return path;
+    } else {
+      return [];
+    }
+  }
+  minDistance(dist, sptSet) {
+    let min = Number.MAX_VALUE;
+    let minIndex = -1;
+
+    for (let v = 0; v < this.noOfVertices; v++) {
+      if (!sptSet[v] && dist[v] <= min) {
+        min = dist[v];
+        minIndex = v;
+      }
+    }
+    return minIndex;
+  }
+
+  shortestPathBFS(src, dest) {
+    const visited = {};
+    const queue = new Queue();
+    const prev = {};
+
+    queue.enqueue(src);
+    visited[src] = true;
+    prev[src] = null;
+
+    while (!queue.isEmpty()) {
+      const current = queue.dequeue();
+
+      if (current === dest) {
+        return this.reconstructPathBFS(prev, src, dest);
+      }
+
+      const neighbors = this.AdjList.get(current);
+
+      if (neighbors) {
+        for (let i = 0; i < neighbors.length; i++) {
+          const neighbor = neighbors[i];
+
+          if (!visited[neighbor]) {
+            visited[neighbor] = true;
+            queue.enqueue(neighbor);
+            prev[neighbor] = current;
+          }
+        }
+      }
+    }
+
+    return [];
+  }
+
+  reconstructPathBFS(prev, src, dest) {
+    const path = [];
+    let current = dest;
+
+    while (current !== null) {
+      path.unshift(current); 
+      current = prev[current];
+    }
+
+    if (path[0] === src) {
+      return path; 
+    } else {
+      return [];
+    }
+  }
 }
 
 let g = new Graph(6);
 
-let verticals = ["A", "B", "C", "D", "E", "F"];
+let vertices = [0, 1, 2, 3, 4, 5];
 
-for (let i = 0; i < verticals.length; i++) {
-  g.addVertex(verticals[i]);
+for (let i = 0; i < vertices.length; i++) {
+  g.addVertex(vertices[i]);
 }
 
-g.addEdge("A", "B");
-g.addEdge("A", "D");
-g.addEdge("A", "E");
-g.addEdge("B", "C");
-g.addEdge("D", "E");
-g.addEdge("E", "F");
-g.addEdge("E", "C");
-g.addEdge("C", "F");
+g.addEdge(0, 1);
+g.addEdge(0, 3);
+g.addEdge(0, 4);
+g.addEdge(1, 2);
+g.addEdge(3, 4);
+g.addEdge(4, 0);
+g.addEdge(4, 2);
+g.addEdge(2, 5);
 g.printGraph();
 
 console.log("BFS");
-g.bfs("A");
+g.bfs(0);
 
 console.log("DFS");
-g.dfs("A");
+g.dfs(0);
+
+let shortestPath = g.dijkstra(0, 5);
+
+if (shortestPath.length > 0) {
+  console.log("Shortest Path:", shortestPath);
+} else {
+  console.log("No path found.");
+}
+
+
+let shortestPathBFS = g.shortestPathBFS(0, 5);
+
+if (shortestPathBFS.length > 0) {
+    console.log("Shortest Path (BFS):", shortestPathBFS);
+} else {
+    console.log("No path found.");
+}
