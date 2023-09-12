@@ -1,3 +1,11 @@
+
+// ListNode - class for list nodes in LinkedList
+// LinkedList is a class with head and list length
+// append - adds element to the end of list (and ++length)
+// insert - adds element at given position
+// remove - removes element and manages reference to the next node
+// search - searches for node
+// hasCycle - checks for cycle using slow and fast
 class ListNode {
   constructor(data) {
     this.data = data;

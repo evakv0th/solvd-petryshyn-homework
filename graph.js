@@ -1,4 +1,11 @@
 import { Queue } from "./queue.js";
+
+// graph class with noOfVertices and adjList as props
+// addVertex adds verticale
+// addEdge ads edge
+// printGraph - 3rd party stolen func to print graph in terminal in humanable type
+//  you can search with dfs and bfs
+// also you can find shortest path between 2 elements using dijkstra method or bfs
 class Graph {
   constructor(noOfVertices) {
     this.noOfVertices = noOfVertices;

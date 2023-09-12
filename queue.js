@@ -1,3 +1,5 @@
+// class Queue is standard representation of Queue
+// its FIFO (in other aspects its like Stack)
 export class Queue {
   constructor() {
     this.items = [];

@@ -1,3 +1,13 @@
+// Class Stack is LIFO
+// push - add element to end of stack
+// pop - remove element of end of stack
+// peek - returns last element but doesnt pop it
+// is empty - checks if stack is empty
+
+//MinMaxStack implements logic to always know min and max at stack with O(1)
+// it has overloaded push and pop
+// and new methods getMin and getMax
+// main logic is when we push or add element we check if its min or max to always know min or max element of the stack
 class Stack {
   constructor() {
     this.items = [];

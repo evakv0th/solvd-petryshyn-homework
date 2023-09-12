@@ -1,3 +1,13 @@
+// Class BinaryTree - has a root (null by default) and helping class Node which is element of tree
+// methods: insert(data) which insert data to root if root is null or uses insertNode method
+// insertNode is recursive method which takes node and newNode as parameters
+// and either assign newNode to node.left or node.right or going further 
+
+//search method with parametrs node and data, it checks if node contains data and if not goes left (if data < node.data) or right...
+
+// inorder, postorder and preorder - recursive methods for traversing the tree
+
+//isBinarySearchTree - recursive function that checks if binary tree is BST
 class BinaryTree {
   constructor() {
     this.root = null;
