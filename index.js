@@ -7,50 +7,62 @@
 // it uses charCodeAt of a letter in a string * length of string+salt
 // on every third iteration it also multiplies on length one more time
 
-// collision detection was made by me, when i was doing just function
-// it was using external object, but with hashTable class its easier
-// if there is key already in hashTable but value is different, than its adding "x" to salt
-// this ensures that for same string it will always give same output and for collisions it will take another string
+// collision handling using separate chaining
+// it stores in buckets, and for strings that has same hash (in my func - 'at me 2' and 'bt le 2' are the same number 28413)
+// it stores as key-value, where key=hash, and value=assigned value when we use add method
+// when we use get method - it gets value that was asked, even if hash is the same for some string (collision)
 class HashTable {
   constructor() {
     this.table = {};
   }
 
   add(key, value) {
-    let hash = customHash(key);
+    const hash = customHash(key);
 
-        if (this.table[hash] === undefined) {
-            return this.table[hash] = [key, value];
-        } else {
-            while (this.table[hash] !== undefined) {
-                hash++;
-            }
-        }
+    if (this.table[hash] === undefined) {
+      this.table[hash] = [];
+    }
+    const chain = this.table[hash];
+    for (let i = 0; i < chain.length; i++) {
+      if (chain[i][0] === key) {
+        chain[i][1] = value;
+        return;
+      }
+    }
 
-        return this.table[hash] = [key, value];
+    chain.push([key, value]);
   }
 
   get(key) {
-    let hash = customHash(key);
+    const hash = customHash(key);
 
-    while (this.table[hash] !== undefined) {
-        if (this.table[hash][0] === key) {
-            return this.table[hash][1];
-        }
-        hash++;
+    if (this.table[hash] === undefined) {
+      return undefined;
+    }
+
+    const chain = this.table[hash];
+    for (let i = 0; i < chain.length; i++) {
+      if (chain[i][0] === key) {
+        return chain[i][1];
+      }
     }
 
     return undefined;
   }
-  remove(key) {
-    let hash = customHash(key);
 
-    while (this.table[hash] !== undefined) {
-      if (this.table[hash].key === key) {
-        delete this.table[hash];
+  remove(key) {
+    const hash = customHash(key);
+
+    if (this.table[hash] === undefined) {
+      return;
+    }
+
+    const chain = this.table[hash];
+    for (let i = 0; i < chain.length; i++) {
+      if (chain[i][0] === key) {
+        chain.splice(i, 1);
         return;
       }
-      hash++;
     }
   }
 }
@@ -86,11 +98,11 @@ function customHash(string, salt = "salt") {
 }
 
 hashTable.add("at me 2", "value1");
-hashTable.add("at me 2", "value");
 hashTable.add("bt le 2", "value2");
 hashTable.add("bt md 2", "value3");
 hashTable.add("youAreDoingVeryWellImVeryProudOfYou", "value4");
 
+console.log(hashTable.get("bt md 2"));
 console.log(hashTable.get("at me 2"));
 console.log(hashTable.get("bt le 2"));
 console.log(hashTable.get("bt md 2"));
@@ -98,6 +110,11 @@ console.log(hashTable.get("youAreDoingVeryWellImVeryProudOfYou"));
 
 hashTable.remove("at me 2");
 
+console.log(hashTable.get("at me 2"));
+
+hashTable.add("at me 2", "test");
+console.log(hashTable.get("at me 2"));
+
 for (let [key, value] of Object.entries(hashTable.table)) {
-  console.log(`Key: ${key}, Value: ${value}`);
+  console.log(`Key: ${key}, Values: ${value}`);
 }
