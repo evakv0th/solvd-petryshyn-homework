@@ -17,14 +17,41 @@ class HashTable {
   }
 
   add(key, value) {
-    this.table[key] = value;
+    let hash = customHash(key);
+
+        if (this.table[hash] === undefined) {
+            return this.table[hash] = [key, value];
+        } else {
+            while (this.table[hash] !== undefined) {
+                hash++;
+            }
+        }
+
+        return this.table[hash] = [key, value];
   }
 
   get(key) {
-    return this.table[key];
+    let hash = customHash(key);
+
+    while (this.table[hash] !== undefined) {
+        if (this.table[hash][0] === key) {
+            return this.table[hash][1];
+        }
+        hash++;
+    }
+
+    return undefined;
   }
   remove(key) {
-    delete this.table[key];
+    let hash = customHash(key);
+
+    while (this.table[hash] !== undefined) {
+      if (this.table[hash].key === key) {
+        delete this.table[hash];
+        return;
+      }
+      hash++;
+    }
   }
 }
 
@@ -54,32 +81,23 @@ function customHash(string, salt = "salt") {
       );
     }
   }
-  const result = hashResult;
 
-  if (
-    hashTable.table.hasOwnProperty(result) &&
-    hashTable.table[result] !== inputCombined
-  ) {
-    let newSalt = salt + "x";
-    return customHash(string, newSalt);
-  } else {
-    hashTable.table[result] = inputCombined;
-    return result;
-  }
+  return hashResult;
 }
 
-console.log(customHash("at me 2"));
-console.log(customHash("bt le 2")); // first 2 cases produces same output without collision handling, you can check it and comment out 'at me 2' and this line will output 28413
-console.log(customHash("at me 2", "saltttt"));
-console.log(customHash("youAreDoingVeryWellImVeryProudOfYou", "gabe"));
+hashTable.add("at me 2", "value1");
+hashTable.add("at me 2", "value");
+hashTable.add("bt le 2", "value2");
+hashTable.add("bt md 2", "value3");
+hashTable.add("youAreDoingVeryWellImVeryProudOfYou", "value4");
 
-console.log(hashTable.get(customHash("at me 2")));
-console.log(hashTable.get(customHash("bt le 2")));
-console.log(hashTable.get(customHash("at me 2", "saltttt")));
-console.log(
-  hashTable.get(customHash("youAreDoingVeryWellImVeryProudOfYou", "gabe"))
-);
+console.log(hashTable.get("at me 2"));
+console.log(hashTable.get("bt le 2"));
+console.log(hashTable.get("bt md 2"));
+console.log(hashTable.get("youAreDoingVeryWellImVeryProudOfYou"));
 
-hashTable.remove(customHash("at me 2"));
+hashTable.remove("at me 2");
 
-console.log(hashTable.table);
+for (let [key, value] of Object.entries(hashTable.table)) {
+  console.log(`Key: ${key}, Value: ${value}`);
+}
