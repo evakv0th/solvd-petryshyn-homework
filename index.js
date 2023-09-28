@@ -16,13 +16,19 @@ const jsonString = '{"name": "Alice", "age": 28, "person": {"name": "Bob", "age"
 
 // myJSONParseExample(jsonString)
 
-const jsonString2 = '{"name": "Alice", "age": 28, "person": {"name": "Bob", "age": 30}}';
+const jsonString2 = '{"name": "Alice", "age": 28, "person": {"name": "Bob", "age": 30, "object3": {"abc": null}, "f": true}, "array": [1, "game"]}';
 
 function myJSONParse(string) {
   try {
     let JSONre = /^{.*}$/;
-    console.log(string)
     console.log(JSONre.test(string))
+
+    let reKeys = /"[^"]+"(?=\s*:)|(?<=.){(?=\s*")|}(?=\s*,)/g;
+    const matchesKeys = jsonString2.match(reKeys)
+    console.log(matchesKeys)
+    let reVal = /(?<=:\s*)("[^"]*"|\d+(\.\d+)?|\btrue\b|\bfalse\b|null|\[[^\[\]]*\])|(?<=.){(?=\s*")|}(?=\s*,)/g
+    const matchesVal = jsonString2.match(reVal)
+    console.log(matchesVal)
   } catch (error) {
     console.error("Error parsing JSON:", error);
   }
