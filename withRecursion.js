@@ -7,9 +7,9 @@ function myJSONParse(string) {
   if (!JSONre.test(string)) {
     throw new SyntaxError("Invalid JSON format");
   }
-
   const tokenizationRE =
     /("[^"]+"(?=\s*:))|("[^"]*")|(\d+(\.\d+)?)|(\btrue\b|\bfalse\b)|(null)|({|\[)|}|,|\]|:/g;
+    
   console.log(string.match(tokenizationRE));
   function parseValue() {
     if (match[1]) {
@@ -46,6 +46,7 @@ function myJSONParse(string) {
     }
     return arr;
   }
+  
   function parseObject() {
     const obj = {};
     let key;
